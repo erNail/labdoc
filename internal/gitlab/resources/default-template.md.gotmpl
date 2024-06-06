@@ -1,0 +1,40 @@
+# Components Documentation
+
+## Components
+
+{{- range $component := .Components }}
+
+### {{ $component.Name }}
+
+{{ $component.Description }}
+
+#### Usage
+
+You can add this component to an existing `.gitlab-ci.yml` file by using the `include:` keyword.
+
+```yaml
+include:
+  - component: "{{ $.RepoURL }}/{{ $component.Name }}@{{ $.Version }}"
+    inputs: {}
+```
+
+You can configure the component with the inputs documented below.
+
+#### Inputs
+
+| Name | Description | Type | Default |
+|------|-------------|------|---------|
+{{- range $input := $component.Inputs }}
+| `{{ $input.Name }}` | {{ $input.Description }} | `{{ $input.Type }}` | `{{ $input.Default }}` |
+{{- end }}
+
+#### Jobs
+
+The component will add the following jobs to your CI/CD Pipeline
+{{- range $job := $component.Jobs }}
+
+##### `{{ $job.Name }}`
+
+{{ $job.Comment }}
+{{- end }}
+{{- end }}
