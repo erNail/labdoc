@@ -1,0 +1,9 @@
+---
+- id: "labdoc-generate"
+  name: "labdoc"
+  language: "golang"
+  entry: "labdoc generate"
+  args:
+    - "--repoUrl=gitlab.com/erNail/labdoc"
+  pass_filenames: false
+...
