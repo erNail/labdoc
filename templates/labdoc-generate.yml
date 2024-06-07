@@ -1,0 +1,59 @@
+---
+# A GitLab CI/CD Component for generating Markdown documentation from GitLab CI/CD Components
+# using `labdoc`.
+spec:
+  inputs:
+    labdoc-generate-job-name:
+      description: "The name of the job that generates the documentation."
+      type: "string"
+      default: "labdoc-generate-job"
+    labdoc-generate-job-extends:
+      description: "The jobs that the job that generates the documentation should inherit from"
+      type: "array"
+      default: []
+    stage:
+      description: "The stage of the jobs for generating the documentation."
+      type: "string"
+      default: "docs"
+    image:
+      description: "The image to use for running `labdoc`."
+      type: "string"
+      default: "ernail/labdoc:1.0.0"
+    repo-url:
+      description: >-
+        The repository URL from which to include the GitLab CI/CD Component.
+        Will be used in the documentation.
+      type: "string"
+    output-file-path:
+      description: "The path and name of the rendered file to be created."
+      type: "string"
+      default: "templates/README.md"
+    additional-labdoc-parameters:
+      description: >-
+        Additional parameters to add to the `labdoc generate` command.
+        If you want this job to only check if your existing documentation is up-to-date,
+        use the `--check` flag.
+      type: "string"
+      default: ""
+...
+
+---
+# Generates Markdown documentation from GitLab CI/CD Components.
+# The generated documentation will be uploaded as an artifact at `$[[ inputs.output-file-path ]]`.
+$[[ inputs.labdoc-generate-job-name ]]:
+  extends: "$[[ inputs.labdoc-generate-job-extends ]]"
+  stage: "$[[ inputs.stage ]]"
+  image:
+    name: "$[[ inputs.image ]]"
+    entrypoint:
+      - ""
+  script:
+    - >
+      eval "labdoc generate
+      --repoUrl $[[ inputs.repo-url ]]
+      --outputFile $[[ inputs.output-file-path ]]
+      $[[ inputs.additional-labdoc-parameters ]]"
+  artifacts:
+    paths:
+      - "$[[ inputs.output-file-path ]]"
+...

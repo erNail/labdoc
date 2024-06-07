@@ -1,0 +1,23 @@
+---
+stages:
+  - "test"
+  - "docs"
+
+.common-settings-job:
+  needs: []
+
+include:
+  # Test labdoc generate with default settings
+  - component: "$CI_SERVER_FQDN/$CI_PROJECT_PATH/labdoc-generate@$CI_COMMIT_SHA"
+    inputs:
+      repo-url: "gitlab.com/erNail/labdoc"
+  # Test labdoc generate with check parameter
+  - component: "$CI_SERVER_FQDN/$CI_PROJECT_PATH/labdoc-generate@$CI_COMMIT_SHA"
+    inputs:
+      repo-url: "gitlab.com/erNail/labdoc"
+      stage: "test"
+      labdoc-generate-job-name: "labdoc-generate-check-job"
+      labdoc-generate-job-extends:
+        - ".common-settings-job"
+      additional-labdoc-parameters: "--check"
+...
