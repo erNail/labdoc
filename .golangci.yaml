@@ -1,0 +1,20 @@
+---
+linters:
+  enable-all: true
+  disable:
+    - "execinquery"
+    - "gomnd"
+    - "testpackage"
+    - "exhaustruct"
+    - "err113"
+    - "depguard"
+    - "funlen"
+linters-settings:
+  mnd:
+    ignored-numbers:
+      - "0o644"
+      - "0o755"
+      - "42"
+  goconst:
+    ignore-tests: true
+...

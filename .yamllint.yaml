@@ -1,0 +1,15 @@
+---
+extends: "default"
+
+rules:
+  quoted-strings:
+    quote-type: "double"
+  indentation:
+    spaces: 2
+  line-length:
+    max: 120
+  comments:
+    min-spaces-from-content: 1
+  document-end:
+    present: true
+...
