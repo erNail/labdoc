@@ -1,0 +1,36 @@
+---
+version: "3"
+
+tasks:
+  lint:
+    cmds:
+      - "pre-commit run --all-files"
+
+  test:
+    cmds:
+      - "go test ./..."
+
+  run:
+    cmds:
+      - "go run main.go {{ .CLI_ARGS }}"
+
+  run-generate:
+    cmds:
+      - "go run main.go generate --repoUrl gitlab.com/erNail/labdoc {{ .CLI_ARGS }}"
+
+  build:
+    cmds:
+      - "go build"
+
+  build-image:
+    cmds:
+      - "ko build --platform all --local"
+
+  release-test:
+    cmds:
+      - "semantic-release --dry-run"
+
+  test-github-actions:
+    cmds:
+      - "act"
+...

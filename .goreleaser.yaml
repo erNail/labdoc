@@ -1,0 +1,45 @@
+---
+version: 2
+
+before:
+  hooks:
+    - "go mod tidy"
+
+builds:
+
+  - env:
+      - "CGO_ENABLED=0"
+    goos:
+      - "darwin"
+      - "linux"
+    goarch:
+      - "amd64"
+      - "arm64"
+
+# Container Image build
+kos:
+  - repository: "ernail/labdoc"
+    base_image: "alpine:3.20.0"
+    tags:
+      - "{{ .Version }}"
+    bare: true
+    preserve_import_paths: false
+    platforms:
+      - "linux/amd64"
+      - "linux/arm64"
+
+brews:
+  - name: "labdoc"
+    caveats: "Run `labdoc -h` to get started!"
+    homepage: "https://github.com/erNail/labdoc"
+    description: "Automatically generate documentation for GitLab CI/CD components and CI/CD pipelines."
+    license: "MIT"
+    commit_msg_template: "chore: Update brew formula for {{ .ProjectName }} version {{ .Tag }}"
+    repository:
+      owner: "erNail"
+      name: "homebrew-tap"
+      branch: "feature/formula-update"
+      token: "{{ .Env.HOMEBREW_TAP_ERNAIL_GITHUB_TOKEN }}"
+      pull_request:
+        enabled: true
+...
