@@ -62,11 +62,10 @@ func RemoveYamlDocumentSeparators(yamlContent []byte) []byte {
 // Returns:
 //   - string: The cleaned comment string.
 func FormatCommentAsPlainText(comment string) string {
-	comment = strings.ReplaceAll(comment, "#", "")
 	lines := strings.Split(comment, "\n")
 
 	for i, line := range lines {
-		lines[i] = strings.TrimSpace(line)
+		lines[i] = strings.TrimSpace(strings.TrimPrefix(line, "#"))
 	}
 
 	cleanedComment := strings.Join(lines, "\n")

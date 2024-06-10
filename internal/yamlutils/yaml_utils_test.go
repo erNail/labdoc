@@ -118,6 +118,19 @@ func TestFormatCommentAsPlainTextFormatsMultiLineComment(t *testing.T) {
 	assert.Equal(t, expectedFormattedComment, actualFormattedComment)
 }
 
+func TestFormatCommentAsPlainTextOnlyRemovesHashSymbolInTheBeginning(t *testing.T) {
+	t.Parallel()
+
+	multilineComment := `# This is a comment with a # in it
+# This is a comment with an [anchor link](#anchor) in it`
+
+	expectedFormattedComment := "This is a comment with a # in it\nThis is a comment with an [anchor link](#anchor) in it"
+
+	actualFormattedComment := FormatCommentAsPlainText(multilineComment)
+
+	assert.Equal(t, expectedFormattedComment, actualFormattedComment)
+}
+
 func TestReadYamlFilesFromDirectoryWithNoYamlFilesReturnsNoYamlFiles(t *testing.T) {
 	t.Parallel()
 
