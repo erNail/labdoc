@@ -3,7 +3,6 @@ package gitlab
 import (
 	"testing"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"gopkg.in/yaml.v3"
@@ -33,7 +32,7 @@ job: {}
 	assert.Equal(t, "string-input", gitlabCiConfig.Spec.Inputs[0].Name)
 }
 
-func TestParseYamlWithoutSeparatorsCreatesGitLabCiConfigWithSortedArrays(t *testing.T) {
+func TestParseYamlWithoutSeparatorsCreatesGitLabCiConfig(t *testing.T) {
 	t.Parallel()
 
 	yamlFileContent := `---
@@ -115,12 +114,9 @@ second-job: {}
 		},
 	}
 
-	expectedGitLabCiConfig.Jobs = sortJobs(expectedGitLabCiConfig.Jobs)
-	expectedGitLabCiConfig.Spec.Inputs = sortSpecInputs(expectedGitLabCiConfig.Spec.Inputs)
-
 	actualGitLabCiConfig := parseYamlFileWithoutSeparatorsToGitLabCiConfig([]byte(yamlFileContent))
-	log.Info(actualGitLabCiConfig)
-	assert.Equal(t, expectedGitLabCiConfig, actualGitLabCiConfig)
+	assert.ElementsMatch(t, expectedGitLabCiConfig.Jobs, actualGitLabCiConfig.Jobs)
+	assert.ElementsMatch(t, expectedGitLabCiConfig.Spec.Inputs, actualGitLabCiConfig.Spec.Inputs)
 }
 
 func TestNewComponentFromGitLabCiConfigCreatesValidGitLabCiConfig(t *testing.T) {
@@ -212,50 +208,4 @@ func TestGenerateComponentNameFromFilePathResultsInCorrectName(t *testing.T) {
 
 	actualName = generateComponentNameFromFilePath("file.yml")
 	assert.Equal(t, expectedName, actualName)
-}
-
-func TestSortJobsCorrectlySortsJobs(t *testing.T) {
-	t.Parallel()
-
-	jobA := Job{
-		Name: "A",
-	}
-	jobB := Job{
-		Name: "B",
-	}
-	jobs := []Job{
-		jobB,
-		jobA,
-	}
-
-	expectedJobs := []Job{
-		jobA,
-		jobB,
-	}
-
-	sortJobs(jobs)
-	assert.Equal(t, expectedJobs, jobs)
-}
-
-func TestSortSpecInputsCorrectlySortsInputs(t *testing.T) {
-	t.Parallel()
-
-	inputA := Input{
-		Name: "A",
-	}
-	inputB := Input{
-		Name: "B",
-	}
-	inputs := []Input{
-		inputB,
-		inputA,
-	}
-
-	expectedInputs := []Input{
-		inputA,
-		inputB,
-	}
-
-	sortSpecInputs(inputs)
-	assert.Equal(t, expectedInputs, inputs)
 }

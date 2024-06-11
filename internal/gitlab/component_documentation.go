@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
+	"slices"
 	"text/template"
 
 	"github.com/erNail/labdoc/internal/yamlutils"
@@ -99,6 +100,11 @@ func buildComponentDocumentationFromComponents(
 	repoURL string,
 	version string,
 ) ComponentsDocumentation {
+	for _, component := range components {
+		component.Inputs = sortInputs(component.Inputs)
+		component.Jobs = sortJobs(component.Jobs)
+	}
+
 	componentDocumentation := ComponentsDocumentation{
 		Components: components,
 		RepoURL:    repoURL,
@@ -218,4 +224,50 @@ func compareExistingDocumentation(filesystem afero.Fs, outputFilePath string, ne
 	log.Info("Your documentation is up-to-date!")
 
 	return nil
+}
+
+// sortJobs sorts a slice of Job structs by their name.
+//
+// Parameters:
+//   - jobs: A slice of Job structs.
+//
+// Returns:
+//   - []Job: The sorted slice of Job structs.
+func sortJobs(jobs []Job) []Job {
+	slices.SortFunc(jobs, func(a Job, b Job) int {
+		if a.Name < b.Name {
+			return -1
+		}
+
+		if a.Name > b.Name {
+			return 1
+		}
+
+		return 0
+	})
+
+	return jobs
+}
+
+// sortInputs sorts a slice of Input structs by their name.
+//
+// Parameters:
+//   - inputs: A slice of Input structs.
+//
+// Returns:
+//   - []Input: The sorted slice of Input structs.
+func sortInputs(inputs []Input) []Input {
+	slices.SortFunc(inputs, func(a Input, b Input) int {
+		if a.Name < b.Name {
+			return -1
+		}
+
+		if a.Name > b.Name {
+			return 1
+		}
+
+		return 0
+	})
+
+	return inputs
 }
