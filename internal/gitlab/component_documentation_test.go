@@ -160,6 +160,78 @@ second-component-second-job: {}
 	assert.Contains(t, string(outputContent), "This is component first-component")
 }
 
+func TestBuildComponentDocumentationFromComponentsBuildsSortedComponentDocumentation(t *testing.T) {
+	t.Parallel()
+
+	components := []Component{
+		{
+			Name:        "ComponentB",
+			Description: "Second component",
+			Inputs: []Input{
+				{Name: "InputB", Description: "Second input"},
+				{Name: "InputA", Description: "First input"},
+			},
+			Jobs: []Job{
+				{Name: "JobB", Comment: "Second job"},
+				{Name: "JobA", Comment: "First job"},
+			},
+		},
+		{
+			Name:        "ComponentA",
+			Description: "First component",
+			Inputs: []Input{
+				{Name: "InputB", Description: "Second input"},
+				{Name: "InputA", Description: "First input"},
+			},
+			Jobs: []Job{
+				{Name: "JobB", Comment: "Second job"},
+				{Name: "JobA", Comment: "First job"},
+			},
+		},
+	}
+
+	repoURL := "https://example.com/repo"
+	version := "1.0.0"
+
+	// Expected sorted components, inputs, and jobs
+	expectedComponents := []Component{
+		{
+			Name:        "ComponentA",
+			Description: "First component",
+			Inputs: []Input{
+				{Name: "InputA", Description: "First input"},
+				{Name: "InputB", Description: "Second input"},
+			},
+			Jobs: []Job{
+				{Name: "JobA", Comment: "First job"},
+				{Name: "JobB", Comment: "Second job"},
+			},
+		},
+		{
+			Name:        "ComponentB",
+			Description: "Second component",
+			Inputs: []Input{
+				{Name: "InputA", Description: "First input"},
+				{Name: "InputB", Description: "Second input"},
+			},
+			Jobs: []Job{
+				{Name: "JobA", Comment: "First job"},
+				{Name: "JobB", Comment: "Second job"},
+			},
+		},
+	}
+
+	expected := ComponentsDocumentation{
+		Components: expectedComponents,
+		RepoURL:    repoURL,
+		Version:    version,
+	}
+
+	result := buildComponentDocumentationFromComponents(components, repoURL, version)
+
+	assert.Equal(t, expected, result)
+}
+
 func TestReadTemplateFileReadsEmbeddedFile(t *testing.T) {
 	t.Parallel()
 
@@ -312,4 +384,24 @@ func TestSortSpecInputsCorrectlySortsInputs(t *testing.T) {
 
 	sortInputs(inputs)
 	assert.Equal(t, expectedInputs, inputs)
+}
+
+func TestSortComponentsCorrectlySortsComponents(t *testing.T) {
+	t.Parallel()
+
+	components := []Component{
+		{Name: "beta"},
+		{Name: "alpha"},
+		{Name: "gamma"},
+	}
+
+	expectedComponents := []Component{
+		{Name: "alpha"},
+		{Name: "beta"},
+		{Name: "gamma"},
+	}
+
+	actualComponents := sortComponents(components)
+
+	assert.Equal(t, expectedComponents, actualComponents)
 }
