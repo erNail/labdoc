@@ -70,11 +70,8 @@ func (gitlabCiConfig *CiConfig) UnmarshalYAML(node *yaml.Node) error {
 				Comment: yamlutils.FormatCommentAsPlainText(keyNode.HeadComment),
 			}
 			gitlabCiConfig.Jobs = append(gitlabCiConfig.Jobs, job)
-			gitlabCiConfig.Jobs = sortJobs(gitlabCiConfig.Jobs)
 		}
 	}
-
-	gitlabCiConfig.Jobs = sortJobs(gitlabCiConfig.Jobs)
 
 	return nil
 }
@@ -106,8 +103,6 @@ func parseSpecInputs(specNode yaml.Node) []Input {
 		input.Name = key
 		inputs = append(inputs, input)
 	}
-
-	inputs = sortSpecInputs(inputs)
 
 	return inputs
 }
@@ -197,50 +192,4 @@ func generateComponentNameFromFilePath(filePath string) string {
 	filename := strings.TrimSuffix(filenameWithoutPath, filepath.Ext(filenameWithoutPath))
 
 	return filename
-}
-
-// sortJobs sorts a slice of Job structs by their name.
-//
-// Parameters:
-//   - jobs: A slice of Job structs.
-//
-// Returns:
-//   - []Job: The sorted slice of Job structs.
-func sortJobs(jobs []Job) []Job {
-	slices.SortFunc(jobs, func(a Job, b Job) int {
-		if a.Name < b.Name {
-			return -1
-		}
-
-		if a.Name > b.Name {
-			return 1
-		}
-
-		return 0
-	})
-
-	return jobs
-}
-
-// sortSpecInputs sorts a slice of Input structs by their name.
-//
-// Parameters:
-//   - inputs: A slice of Input structs.
-//
-// Returns:
-//   - []Input: The sorted slice of Input structs.
-func sortSpecInputs(inputs []Input) []Input {
-	slices.SortFunc(inputs, func(a Input, b Input) int {
-		if a.Name < b.Name {
-			return -1
-		}
-
-		if a.Name > b.Name {
-			return 1
-		}
-
-		return 0
-	})
-
-	return inputs
 }

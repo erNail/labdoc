@@ -267,3 +267,49 @@ Description: Description2
 	actualContent := renderDocumentationContent(componentsDocumentation, templateFilePath, filesystem)
 	assert.Equal(t, expectedContent, actualContent)
 }
+
+func TestSortJobsCorrectlySortsJobs(t *testing.T) {
+	t.Parallel()
+
+	jobA := Job{
+		Name: "A",
+	}
+	jobB := Job{
+		Name: "B",
+	}
+	jobs := []Job{
+		jobB,
+		jobA,
+	}
+
+	expectedJobs := []Job{
+		jobA,
+		jobB,
+	}
+
+	sortJobs(jobs)
+	assert.Equal(t, expectedJobs, jobs)
+}
+
+func TestSortSpecInputsCorrectlySortsInputs(t *testing.T) {
+	t.Parallel()
+
+	inputA := Input{
+		Name: "A",
+	}
+	inputB := Input{
+		Name: "B",
+	}
+	inputs := []Input{
+		inputB,
+		inputA,
+	}
+
+	expectedInputs := []Input{
+		inputA,
+		inputB,
+	}
+
+	sortInputs(inputs)
+	assert.Equal(t, expectedInputs, inputs)
+}
