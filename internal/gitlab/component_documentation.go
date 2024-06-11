@@ -100,6 +100,7 @@ func buildComponentDocumentationFromComponents(
 	repoURL string,
 	version string,
 ) ComponentsDocumentation {
+	components = sortComponents(components)
 	for _, component := range components {
 		component.Inputs = sortInputs(component.Inputs)
 		component.Jobs = sortJobs(component.Jobs)
@@ -270,4 +271,27 @@ func sortInputs(inputs []Input) []Input {
 	})
 
 	return inputs
+}
+
+// sortComponents sorts a slice of Component structs by their name.
+//
+// Parameters:
+//   - components: A slice of Component structs.
+//
+// Returns:
+//   - []Component: The sorted slice of Component structs.
+func sortComponents(components []Component) []Component {
+	slices.SortFunc(components, func(a Component, b Component) int {
+		if a.Name < b.Name {
+			return -1
+		}
+
+		if a.Name > b.Name {
+			return 1
+		}
+
+		return 0
+	})
+
+	return components
 }
