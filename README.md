@@ -156,6 +156,8 @@ repos:
     rev: "<LATEST_GITHUB_RELEASE_VERSION>"
     hooks:
       - id: "labdoc-generate"
+        args:
+          - "--repoUrl=gitlab.com/erNail/labdoc"
 ```
 
 ### GitLab CI/CD Component
