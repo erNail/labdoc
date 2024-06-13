@@ -40,29 +40,12 @@ jobs:
       - name: "Run go build"
         run: "go build"
 
-  mirror-gitlab-job:
-    runs-on: "ubuntu-22.04"
-    steps:
-      - name: "Check out repository"
-        uses: "actions/checkout@v4.1.6"
-        with:
-          fetch-depth: 0
-      - name: "Add Gitlab Remote"
-        run: |
-          git remote add gitlab https://oauth2:${{ secrets.GITLAB_LABDOC_MIRROR_TOKEN }}@gitlab.com/erNail/labdoc.git
-      - name: "Push all branches to GitLab"
-        run: "git push gitlab --all --force"
-
-      - name: "Push all tags to GitLab"
-        run: "git push gitlab --tags --force"
-
   release-job:
     runs-on: "ubuntu-22.04"
     needs:
       - "go-test-job"
       - "go-build-job"
       - "pre-commit-job"
-      - "mirror-gitlab-job"
     permissions:
       contents: "write"
     steps:
@@ -95,4 +78,22 @@ jobs:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           DOCKER_LABDOC_GORELEASER_TOKEN: "${{ secrets.DOCKER_LABDOC_GORELEASER_TOKEN }}"
           HOMEBREW_TAP_ERNAIL_GITHUB_TOKEN: "${{ secrets.HOMEBREW_TAP_ERNAIL_GITHUB_TOKEN }}"
+
+  mirror-gitlab-job:
+    runs-on: "ubuntu-22.04"
+    needs:
+      - "release-job"
+    steps:
+      - name: "Check out repository"
+        uses: "actions/checkout@v4.1.6"
+        with:
+          fetch-depth: 0
+      - name: "Add Gitlab Remote"
+        run: |
+          git remote add gitlab https://oauth2:${{ secrets.GITLAB_LABDOC_MIRROR_TOKEN }}@gitlab.com/erNail/labdoc.git
+      - name: "Push all branches to GitLab"
+        run: "git push gitlab --all --force"
+
+      - name: "Push all tags to GitLab"
+        run: "git push gitlab --tags --force"
 ...
