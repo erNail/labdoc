@@ -8,7 +8,7 @@ spec:
       type: "string"
       default: "labdoc-generate-job"
     labdoc-generate-job-extends:
-      description: "The jobs that the job that generates the documentation should inherit from"
+      description: "The jobs that the job that generates the documentation should inherit from."
       type: "array"
       default: []
     stage:
@@ -18,7 +18,7 @@ spec:
     image:
       description: "The image to use for running `labdoc`."
       type: "string"
-      default: "ernail/labdoc:1.0.0"
+      default: "ernail/labdoc:1.1.0"
     repo-url:
       description: >-
         The repository URL from which to include the GitLab CI/CD Component.

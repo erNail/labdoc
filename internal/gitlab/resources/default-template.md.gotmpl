@@ -8,7 +8,7 @@
 
 {{ $component.Description }}
 
-#### Usage
+#### Usage of component `{{ $component.Name }}`
 
 You can add this component to an existing `.gitlab-ci.yml` file by using the `include:` keyword.
 
@@ -20,17 +20,45 @@ include:
 
 You can configure the component with the inputs documented below.
 
-#### Inputs
+#### Inputs of component `{{ $component.Name }}`
 
-| Name | Description | Type | Default |
-|------|-------------|------|---------|
+| Name | Description | Type | Default | Options | Regex | Mandatory |
+|------|-------------|------|---------|---------|-------|-----------|
 {{- range $input := $component.Inputs }}
-| `{{ $input.Name }}` | {{ $input.Description }} | `{{ $input.Type }}` | `{{ $input.Default }}` |
+  {{- $mandatoryDisplay := "No" }}
+  {{- if eq $input.Default nil }}
+    {{- $mandatoryDisplay = "Yes" }}
+  {{- end }}
+
+  {{- $defaultDisplay := $input.Default }}
+  {{- if eq $input.Default nil }}
+    {{- $defaultDisplay = "-" }}
+  {{- else if eq $input.Type "string" }}
+    {{- if eq $input.Default "" }}
+        {{- $defaultDisplay = "\"\"" }}
+    {{- end }}
+  {{- end }}
+
+  {{- $optionsDisplay := $input.Options }}
+  {{- if eq $input.Options nil }}
+    {{- $optionsDisplay = "-" }}
+  {{- end }}
+
+  {{- $regexDisplay := $input.Regex }}
+  {{- if eq $input.Regex "" }}
+    {{- $regexDisplay = "-" }}
+  {{- end }}
+
+  {{- $typeDisplay := $input.Type}}
+  {{- if eq $input.Type "" }}
+    {{- $typeDisplay = "-" }}
+  {{- end }}
+| `{{ $input.Name }}` | {{ $input.Description }} | `{{ $typeDisplay }}` | `{{ $defaultDisplay }}` | `{{ $optionsDisplay }}` | `{{ $regexDisplay }}` | {{ $mandatoryDisplay }} |
 {{- end }}
 
-#### Jobs
+#### Jobs of component `{{ $component.Name }}`
 
-The component will add the following jobs to your CI/CD Pipeline
+The component will add the following jobs to your CI/CD Pipeline.
 {{- range $job := $component.Jobs }}
 
 ##### `{{ $job.Name }}`

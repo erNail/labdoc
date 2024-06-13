@@ -8,41 +8,201 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestGenerateDocumentationUsesEmbeddedTemplate(t *testing.T) {
+func TestGenerateDocumentationRendersInputTableCorrectly(t *testing.T) {
+	t.Parallel()
+
+	componentContent := `---
+# Component Description
+spec:
+  inputs:
+    string-with-default:
+      type: "string"
+      default: ""
+    string-without-default:
+      type: "string"
+    array-with-default:
+      type: "array"
+      default: []
+    array-without-default:
+      type: "array"
+    boolean-with-default:
+      type: "boolean"
+      default: false
+    boolean-without-default:
+      type: "boolean"
+    number-with-default:
+      type: "number"
+      default: 0
+    number-without-default:
+      type: "number"
+    string-with-options:
+      type: "string"
+      options:
+        - "one"
+        - "two"
+    string-with-regex:
+      type: "string"
+      regex: "^test."
+    input-with-description-only:
+      description: "Input with description only"
+    input-with-default-only:
+      default: []
+    input-without-anything: {}
+...
+`
+
+	expectedMarkdownTable := "\n" +
+		"| Name | Description | Type | Default | Options | Regex | Mandatory |\n" +
+		"|------|-------------|------|---------|---------|-------|-----------|\n" +
+		"| `array-with-default` |  | `array` | `[]` | `-` | `-` | No |\n" +
+		"| `array-without-default` |  | `array` | `-` | `-` | `-` | Yes |\n" +
+		"| `boolean-with-default` |  | `boolean` | `false` | `-` | `-` | No |\n" +
+		"| `boolean-without-default` |  | `boolean` | `-` | `-` | `-` | Yes |\n" +
+		"| `input-with-default-only` |  | `-` | `[]` | `-` | `-` | No |\n" +
+		"| `input-with-description-only` | Input with description only | `-` | `-` | `-` | `-` | Yes |\n" +
+		"| `input-without-anything` |  | `-` | `-` | `-` | `-` | Yes |\n" +
+		"| `number-with-default` |  | `number` | `0` | `-` | `-` | No |\n" +
+		"| `number-without-default` |  | `number` | `-` | `-` | `-` | Yes |\n" +
+		"| `string-with-default` |  | `string` | `\"\"` | `-` | `-` | No |\n" +
+		"| `string-with-options` |  | `string` | `-` | `[one two]` | `-` | Yes |\n" +
+		"| `string-with-regex` |  | `string` | `-` | `-` | `^test.` | Yes |\n" +
+		"| `string-without-default` |  | `string` | `-` | `-` | `-` | Yes |\n"
+
+	filesystem := afero.NewMemMapFs()
+	componentDir := "templates"
+	componentPath := componentDir + "/first-component.yml"
+	outputFilePath := "README.md"
+
+	err := filesystem.Mkdir(componentDir, 0o644)
+	require.NoError(t, err)
+	err = afero.WriteFile(filesystem, componentPath, []byte(componentContent), 0o644)
+	require.NoError(t, err)
+
+	documentationGenerator := &RealDocumentationGenerator{}
+	documentationGenerator.GenerateDocumentation(
+		filesystem,
+		"templates",
+		"resources/default-template.md.gotmpl",
+		"github.com/test",
+		"1.0.0",
+		"README.md",
+		false,
+	)
+
+	outputExists, err := afero.Exists(filesystem, outputFilePath)
+	require.NoError(t, err)
+	assert.True(t, outputExists)
+
+	outputContent, err := afero.ReadFile(filesystem, outputFilePath)
+	require.NoError(t, err)
+	assert.Contains(t, string(outputContent), expectedMarkdownTable)
+}
+
+func TestGenerateDocumentationRendersMultipleJobsAndComponentsCorrectly(t *testing.T) {
 	t.Parallel()
 
 	firstComponentContent := `---
-# This is a description of the first component
+# First Component
 spec:
   inputs:
     stage:
-      description: "The stage of the jobs"
-      type: "string"
-      default: "test"
 ...
 ---
-# This is the first job of the first component
+# First Component first job
 first-component-first-job: {}
 
-# This is the second job of the first component
+# First Component second job
 first-component-second-job: {}
 `
 
 	secondComponentContent := `---
-# This is a description of the second component
+# Second Component
 spec:
   inputs:
     stage:
-      description: "The stage of the jobs"
-      type: "string"
-      default: "test"
 ...
 ---
-# This is the first job of the second component
+# Second Component first job
 second-component-first-job: {}
 
-# This is the second job of the second component
+# Second Component second job
 second-component-second-job: {}
+...
+`
+
+	expectedMarkdown := `# Components Documentation
+
+## Components
+
+### first-component
+
+First Component
+` +
+		"\n#### Usage of component `first-component`" +
+		"\n" +
+		"\nYou can add this component to an existing `.gitlab-ci.yml` file by using the `include:` keyword.\n" +
+		"\n" +
+		"```yaml\n" +
+		"include:\n" +
+		"  - component: \"github.com/test/first-component@1.0.0\"\n" +
+		"    inputs: {}\n" +
+		"```\n" +
+		`
+You can configure the component with the inputs documented below.
+` +
+		"\n#### Inputs of component `first-component`\n" +
+		`
+| Name | Description | Type | Default | Options | Regex | Mandatory |
+|------|-------------|------|---------|---------|-------|-----------|
+` +
+		"| `stage` |  | `-` | `-` | `-` | `-` | Yes |\n" +
+		"\n" +
+		"#### Jobs of component `first-component`\n" +
+		`
+The component will add the following jobs to your CI/CD Pipeline.
+` +
+		"\n##### `first-component-first-job`\n" +
+		`
+First Component first job
+` +
+		"\n##### `first-component-second-job`\n" +
+		`
+First Component second job
+
+### second-component
+
+Second Component
+` +
+		"\n#### Usage of component `second-component`" +
+		"\n" +
+		"\nYou can add this component to an existing `.gitlab-ci.yml` file by using the `include:` keyword.\n" +
+		"\n" +
+		"```yaml\n" +
+		"include:\n" +
+		"  - component: \"github.com/test/second-component@1.0.0\"\n" +
+		"    inputs: {}\n" +
+		"```\n" +
+		`
+You can configure the component with the inputs documented below.
+` +
+		"\n#### Inputs of component `second-component`\n" +
+		`
+| Name | Description | Type | Default | Options | Regex | Mandatory |
+|------|-------------|------|---------|---------|-------|-----------|
+` +
+		"| `stage` |  | `-` | `-` | `-` | `-` | Yes |\n" +
+		"\n" +
+		"#### Jobs of component `second-component`\n" +
+		`
+The component will add the following jobs to your CI/CD Pipeline.
+` +
+		"\n##### `second-component-first-job`\n" +
+		`
+Second Component first job
+` +
+		"\n##### `second-component-second-job`\n" +
+		`
+Second Component second job
 `
 
 	filesystem := afero.NewMemMapFs()
@@ -75,68 +235,35 @@ second-component-second-job: {}
 
 	outputContent, err := afero.ReadFile(filesystem, outputFilePath)
 	require.NoError(t, err)
-	assert.Contains(t, string(outputContent), "### first-component")
-	assert.Contains(t, string(outputContent), "### second-component")
-	assert.Contains(t, string(outputContent), "##### `second-component-second-job`")
+	assert.Equal(t, expectedMarkdown, string(outputContent))
 }
 
 func TestGenerateDocumentationUsesCustomTemplate(t *testing.T) {
 	t.Parallel()
 
-	firstComponentContent := `---
-# This is a description of the first component
+	componentContent := `---
+# This is a custom template
 spec:
   inputs:
     stage:
-      description: "The stage of the jobs"
-      type: "string"
-      default: "test"
 ...
----
-# This is the first job of the first component
-first-component-first-job: {}
-
-# This is the second job of the first component
-first-component-second-job: {}
-`
-
-	secondComponentContent := `---
-# This is a description of the second component
-spec:
-  inputs:
-    stage:
-      description: "The stage of the jobs"
-      type: "string"
-      default: "test"
-...
----
-# This is the first job of the second component
-second-component-first-job: {}
-
-# This is the second job of the second component
-second-component-second-job: {}
 `
 
 	customTemplateContent := `
-	# Components Documentation
-
-	{{ range $component := .Components }}
-	This is component {{ $component.Name }}
-	{{ end }}
-	`
+{{- range $component := .Components }}
+Description: {{ $component.Description }}
+{{- end }}
+`
 
 	filesystem := afero.NewMemMapFs()
 	componentDir := "templates"
-	firstComponentPath := componentDir + "/first-component.yml"
-	secondComponentPath := componentDir + "/second-component.yml"
+	componentPath := componentDir + "/first-component.yml"
 	outputFilePath := "README.md"
 	customTemplateFilePath := "my-template.yml"
 
 	err := filesystem.Mkdir(componentDir, 0o644)
 	require.NoError(t, err)
-	err = afero.WriteFile(filesystem, firstComponentPath, []byte(firstComponentContent), 0o644)
-	require.NoError(t, err)
-	err = afero.WriteFile(filesystem, secondComponentPath, []byte(secondComponentContent), 0o644)
+	err = afero.WriteFile(filesystem, componentPath, []byte(componentContent), 0o644)
 	require.NoError(t, err)
 	err = afero.WriteFile(filesystem, customTemplateFilePath, []byte(customTemplateContent), 0o644)
 	require.NoError(t, err)
@@ -157,7 +284,7 @@ second-component-second-job: {}
 
 	outputContent, err := afero.ReadFile(filesystem, outputFilePath)
 	require.NoError(t, err)
-	assert.Contains(t, string(outputContent), "This is component first-component")
+	assert.Contains(t, string(outputContent), "Description: This is a custom template")
 }
 
 func TestBuildComponentDocumentationFromComponentsBuildsSortedComponentDocumentation(t *testing.T) {
