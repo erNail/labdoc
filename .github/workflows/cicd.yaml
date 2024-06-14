@@ -10,7 +10,7 @@ jobs:
     runs-on: "ubuntu-22.04"
     steps:
       - name: "Check out repository"
-        uses: "actions/checkout@v4.1.6"
+        uses: "actions/checkout@v4.1.7"
       - name: "Setup python"
         uses: "actions/setup-python@v5.1.0"
       - name: "Run pre-commit"
@@ -20,7 +20,7 @@ jobs:
     runs-on: "ubuntu-22.04"
     steps:
       - name: "Check out repository"
-        uses: "actions/checkout@v4.1.6"
+        uses: "actions/checkout@v4.1.7"
       - name: "Setup go"
         uses: "actions/setup-go@v5.0.1"
         with:
@@ -32,7 +32,7 @@ jobs:
     runs-on: "ubuntu-22.04"
     steps:
       - name: "Check out repository"
-        uses: "actions/checkout@v4.1.6"
+        uses: "actions/checkout@v4.1.7"
       - name: "Setup go"
         uses: "actions/setup-go@v5.0.1"
         with:
@@ -50,7 +50,7 @@ jobs:
       contents: "write"
     steps:
       - name: "Check out repository"
-        uses: "actions/checkout@v4.1.6"
+        uses: "actions/checkout@v4.1.7"
         with:
           fetch-depth: 0
       - name: "Setup go"
@@ -85,7 +85,7 @@ jobs:
       - "release-job"
     steps:
       - name: "Check out repository"
-        uses: "actions/checkout@v4.1.6"
+        uses: "actions/checkout@v4.1.7"
         with:
           fetch-depth: 0
       - name: "Add Gitlab Remote"
