@@ -34,6 +34,10 @@ tasks:
     cmds:
       - "semantic-release --dry-run"
 
+  test-version-ldflags:
+    cmds:
+      - "go run -ldflags '-s -w -X github.com/erNail/labdoc/cmd.version=v1.2.3' main.go --version"
+
   test-github-actions:
     cmds:
       - "act"

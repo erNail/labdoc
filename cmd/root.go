@@ -7,6 +7,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// This will be set during the build via `-ldflags "-s -w -X github.com/erNail/labdoc/cmd.version={{ .Version }}"`.
+var version = "dev"
+
 // NewRootCmd creates the root command for the CLI application.
 // This command serves as the entry point and parent for all other commands.
 //
@@ -14,9 +17,10 @@ import (
 //   - *cobra.Command: A pointer to the newly created cobra.Command.
 func NewRootCmd() *cobra.Command {
 	rootCmd := &cobra.Command{
-		Use:   "labdoc",
-		Short: "Generate Markdown documentation from GitLab CI/CD Components",
-		Long:  "A CLI tool for generating Markdown documentation from GitLab CI/CD Components",
+		Use:     "labdoc",
+		Short:   "Generate Markdown documentation from GitLab CI/CD Components",
+		Long:    "A CLI tool for generating Markdown documentation from GitLab CI/CD Components",
+		Version: version,
 	}
 
 	filesystem := afero.NewOsFs()
