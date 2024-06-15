@@ -26,7 +26,11 @@ tasks:
     cmds:
       - "ko build --platform all --local"
 
-  release-test:
+  test-release-goreleaser:
+    cmds:
+      - "goreleaser release --snapshot --clean"
+
+  test-release-semantic-release:
     cmds:
       - "semantic-release --dry-run"
 
