@@ -38,7 +38,7 @@ go install github.com/erNail/labdoc
 #### Via Container
 
 ```shell
-docker pull ernail/labdoc:latest
+docker pull ernail/labdoc:<LATEST_GITHUB_RELEASE_VERSION>
 ```
 
 #### From Source
