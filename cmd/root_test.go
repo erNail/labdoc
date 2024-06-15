@@ -17,6 +17,17 @@ func TestRootCmdPrintsHelpWithoutError(t *testing.T) {
 	require.NoError(t, err)
 }
 
+func TestRootCmdPrintsVersionWithoutError(t *testing.T) {
+	t.Parallel()
+
+	cmd := NewRootCmd()
+	cmd.SetArgs([]string{"--version"})
+
+	err := cmd.Execute()
+
+	require.NoError(t, err)
+}
+
 func TestRootCmdCallsGenerateSubcommand(t *testing.T) {
 	t.Parallel()
 

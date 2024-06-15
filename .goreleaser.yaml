@@ -6,7 +6,6 @@ before:
     - "go mod tidy"
 
 builds:
-
   - env:
       - "CGO_ENABLED=0"
     goos:
@@ -15,6 +14,8 @@ builds:
     goarch:
       - "amd64"
       - "arm64"
+    ldflags:
+      - "-s -w -X github.com/erNail/labdoc/cmd.version={{ .Version }}"
 
 # Container Image build
 kos:
