@@ -20,7 +20,7 @@ tasks:
 
   build:
     cmds:
-      - "go build"
+      - "go build -o dist/"
 
   build-image:
     cmds:
