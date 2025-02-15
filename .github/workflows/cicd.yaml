@@ -22,7 +22,7 @@ jobs:
       - name: "Check out repository"
         uses: "actions/checkout@v4.1.7"
       - name: "Setup go"
-        uses: "actions/setup-go@v5.0.1"
+        uses: "actions/setup-go@v5.3.0"
         with:
           go-version: "1.22.3"
       - name: "Run go test"
@@ -34,7 +34,7 @@ jobs:
       - name: "Check out repository"
         uses: "actions/checkout@v4.1.7"
       - name: "Setup go"
-        uses: "actions/setup-go@v5.0.1"
+        uses: "actions/setup-go@v5.3.0"
         with:
           go-version: "1.22.3"
       - name: "Run go build"
@@ -54,7 +54,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: "Setup go"
-        uses: "actions/setup-go@v5.0.1"
+        uses: "actions/setup-go@v5.3.0"
         with:
           go-version: "1.22.3"
       - name: "Setup node"
