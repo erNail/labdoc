@@ -6,7 +6,7 @@ name: "CI/CD"
 
 jobs:
   pre-commit-job:
-    runs-on: "ubuntu-22.04"
+    runs-on: "ubuntu-24.04"
     steps:
       - name: "Check out repository"
         uses: "actions/checkout@v4.1.7"
@@ -16,7 +16,7 @@ jobs:
         uses: "pre-commit/action@v3.0.1"
 
   go-test-job:
-    runs-on: "ubuntu-22.04"
+    runs-on: "ubuntu-24.04"
     steps:
       - name: "Check out repository"
         uses: "actions/checkout@v4.1.7"
@@ -28,7 +28,7 @@ jobs:
         run: "go test ./..."
 
   go-build-job:
-    runs-on: "ubuntu-22.04"
+    runs-on: "ubuntu-24.04"
     steps:
       - name: "Check out repository"
         uses: "actions/checkout@v4.1.7"
@@ -40,7 +40,7 @@ jobs:
         run: "go build -o dist/"
 
   determine-version-job:
-    runs-on: "ubuntu-22.04"
+    runs-on: "ubuntu-24.04"
     outputs:
       version: "${{ steps.get_version.outputs.version }}"
     steps:
@@ -67,7 +67,7 @@ jobs:
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
   release-job:
-    runs-on: "ubuntu-22.04"
+    runs-on: "ubuntu-24.04"
     needs:
       - "determine-version-job"
     if: "needs.determine-version-job.outputs.VERSION != ''"
