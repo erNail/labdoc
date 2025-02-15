@@ -2,8 +2,6 @@
 linters:
   enable-all: true
   disable:
-    - "execinquery"
-    - "gomnd"
     - "testpackage"
     - "exhaustruct"
     - "err113"

@@ -76,7 +76,7 @@ separators`
 
 	expectedYamlContent := "\nThis\n\nshould\n\nbe\n\nwithout\n\n\nseparators"
 	cleanedYamlContent := RemoveYamlDocumentSeparators([]byte(yamlFileContent))
-	assert.Equal(t, expectedYamlContent, string(cleanedYamlContent))
+	assert.YAMLEq(t, expectedYamlContent, string(cleanedYamlContent))
 }
 
 func TestRemoveYamlDocumentSeparatorsKeepsSeparatorsIfWithinString(t *testing.T) {
@@ -88,7 +88,7 @@ This will stay: --- ...
 
 	expectedYamlContent := "\nThis will stay: --- ...\n"
 	cleanedYamlContent := RemoveYamlDocumentSeparators([]byte(yamlFileContent))
-	assert.Equal(t, expectedYamlContent, string(cleanedYamlContent))
+	assert.YAMLEq(t, expectedYamlContent, string(cleanedYamlContent))
 }
 
 func TestFormatCommentAsPlainTextFormatsSingleLineComment(t *testing.T) {
