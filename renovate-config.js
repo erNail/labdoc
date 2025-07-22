@@ -45,7 +45,7 @@ module.exports = {
       matchDatasources: [
         "docker"
       ],
-      pinDigests: true
+      pinDigests: false
     },
   ],
   customManagers: [
