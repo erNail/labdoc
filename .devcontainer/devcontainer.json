@@ -1,7 +1,7 @@
 {
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "image": "mcr.microsoft.com/devcontainers/universal:2@sha256:dca6a985ffbbc74007a13b6f56ac0fbbc5febae081350b66e865a5549338134b",
   "features": {
-    "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2": {}
+    "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2@sha256:7a291ba9b8b4bced1172c22f8afc77c3c7ff3ecef49f15e94e626cae47777a32": {}
   },
   "postCreateCommand": "./.devcontainer/postCreateCommand.sh",
   "customizations": {
