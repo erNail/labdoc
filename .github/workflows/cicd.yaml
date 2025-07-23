@@ -23,7 +23,7 @@ jobs:
       - name: "Setup go"
         uses: "actions/setup-go@v5.5.0"
         with:
-          go-version: "1.23.5"
+          go-version: "1.24.5"
       - name: "Run go test"
         run: "go test ./..."
 
@@ -35,7 +35,7 @@ jobs:
       - name: "Setup go"
         uses: "actions/setup-go@v5.5.0"
         with:
-          go-version: "1.23.5"
+          go-version: "1.24.5"
       - name: "Run go build"
         run: "go build -o dist/"
 
@@ -86,7 +86,7 @@ jobs:
       - name: "Setup go"
         uses: "actions/setup-go@v5.5.0"
         with:
-          go-version: "1.23.5"
+          go-version: "1.24.5"
       - name: "Setup goreleaser"
         run: "go install github.com/goreleaser/goreleaser/v2@v2.0.0"
       - name: "Generate release notes"
