@@ -90,7 +90,7 @@ jobs:
       - name: "Setup goreleaser"
         run: "go install github.com/goreleaser/goreleaser/v2@v2.0.0"
       - name: "Generate release notes"
-        uses: "orhun/git-cliff-action@v4.4.2"
+        uses: "orhun/git-cliff-action@v4.5.0"
         with:
           args: "--tag ${{ needs.determine-version-job.outputs.VERSION }} --unreleased --strip header"
         env:
