@@ -13,7 +13,7 @@ jobs:
       - name: "Check out repository"
         uses: "actions/checkout@v4.2.2"
       - name: "Run Renovate"
-        uses: "renovatebot/github-action@v43.0.4"
+        uses: "renovatebot/github-action@v43.0.5"
         with:
           configurationFile: "./renovate-config.js"
           token: "${{ secrets.RENOVATE_BOT_TOKEN }}"
