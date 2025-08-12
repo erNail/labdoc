@@ -9,7 +9,7 @@ jobs:
     runs-on: "ubuntu-24.04"
     steps:
       - name: "Check out repository"
-        uses: "actions/checkout@v4.2.2"
+        uses: "actions/checkout@v4.3.0"
       - name: "Setup python"
         uses: "actions/setup-python@v5.6.0"
       - name: "Run pre-commit"
@@ -19,7 +19,7 @@ jobs:
     runs-on: "ubuntu-24.04"
     steps:
       - name: "Check out repository"
-        uses: "actions/checkout@v4.2.2"
+        uses: "actions/checkout@v4.3.0"
       - name: "Setup go"
         uses: "actions/setup-go@v5.5.0"
         with:
@@ -31,7 +31,7 @@ jobs:
     runs-on: "ubuntu-24.04"
     steps:
       - name: "Check out repository"
-        uses: "actions/checkout@v4.2.2"
+        uses: "actions/checkout@v4.3.0"
       - name: "Setup go"
         uses: "actions/setup-go@v5.5.0"
         with:
@@ -45,7 +45,7 @@ jobs:
       version: "${{ steps.get_version.outputs.version }}"
     steps:
       - name: "Check out repository"
-        uses: "actions/checkout@v4.2.2"
+        uses: "actions/checkout@v4.3.0"
         with:
           fetch-depth: 0
       - name: "Download verscout"
@@ -75,7 +75,7 @@ jobs:
       contents: "write"
     steps:
       - name: "Check out repository"
-        uses: "actions/checkout@v4.2.2"
+        uses: "actions/checkout@v4.3.0"
         with:
           fetch-depth: 0
       - name: "Login to Docker Hub"
