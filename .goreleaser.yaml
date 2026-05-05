@@ -24,6 +24,7 @@ kos:
     base_image: "alpine"
     tags:
       - "{{ .Version }}"
+      - "latest"
     bare: true
     preserve_import_paths: false
     platforms:
