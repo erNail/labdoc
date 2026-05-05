@@ -22,7 +22,7 @@ You can configure the component with the inputs documented below.
 #### Inputs of component `labdoc-generate`
 
 | Name | Description | Type | Default | Options | Regex | Mandatory |
-|------|-------------|------|---------|---------|-------|-----------|
+| ---- | ----------- | ---- | ------- | ------- | ----- | --------- |
 | `additional-labdoc-parameters` | Additional parameters to add to the `labdoc generate` command. If you want this job to only check if your existing documentation is up-to-date, use the `--check` flag. | `string` | `""` | `-` | `-` | No |
 | `image` | The image to use for running `labdoc`. | `string` | `ernail/labdoc:1.1.0` | `-` | `-` | No |
 | `labdoc-generate-job-extends` | The jobs that the job that generates the documentation should inherit from. | `array` | `[]` | `-` | `-` | No |
