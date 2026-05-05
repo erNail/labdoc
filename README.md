@@ -1,11 +1,6 @@
 # labdoc
 
-<div align="center">
-  <img src="./docs/img/icon.png" width="250" alt="labdoc icon">
-    <p>
-        Automatically generate documentation for GitLab CI/CD components and CI/CD pipelines.
-    </p>
-</div>
+Automatically generate documentation for GitLab CI/CD components and CI/CD pipelines.
 
 ## What is `labdoc`?
 
