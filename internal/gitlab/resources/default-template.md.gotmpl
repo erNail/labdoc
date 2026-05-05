@@ -2,6 +2,11 @@
 
 ## Components
 
+The following components are available in this repository:
+{{ range $component := .Components }}
+- [{{ $component.Name }}](#{{ $component.Name }})
+{{- end }}
+
 {{- range $component := .Components }}
 
 ### {{ $component.Name }}
