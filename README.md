@@ -19,6 +19,12 @@ In the future, the focus might shift to generating documentation for GitLab CI/C
 brew install erNail/tap/labdoc
 ```
 
+#### Via `mise`
+
+```shell
+mise use -g github:ernail/labdoc
+```
+
 #### Via Binary
 
 Check the [releases](https://github.com/erNail/labdoc/releases) for the available binaries.
