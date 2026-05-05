@@ -1,6 +1,6 @@
 module github.com/erNail/labdoc
 
-go 1.23.5
+go 1.26.2
 
 require (
 	github.com/sirupsen/logrus v1.9.3
