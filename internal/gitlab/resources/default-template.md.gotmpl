@@ -23,7 +23,7 @@ You can configure the component with the inputs documented below.
 #### Inputs of component `{{ $component.Name }}`
 
 | Name | Description | Type | Default | Options | Regex | Mandatory |
-|------|-------------|------|---------|---------|-------|-----------|
+| ---- | ----------- | ---- | ------- | ------- | ----- | --------- |
 {{- range $input := $component.Inputs }}
   {{- $mandatoryDisplay := "No" }}
   {{- if eq $input.Default nil }}

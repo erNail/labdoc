@@ -53,7 +53,7 @@ spec:
 
 	expectedMarkdownTable := "\n" +
 		"| Name | Description | Type | Default | Options | Regex | Mandatory |\n" +
-		"|------|-------------|------|---------|---------|-------|-----------|\n" +
+		"| ---- | ----------- | ---- | ------- | ------- | ----- | --------- |\n" +
 		"| `array-with-default` |  | `array` | `[]` | `-` | `-` | No |\n" +
 		"| `array-without-default` |  | `array` | `-` | `-` | `-` | Yes |\n" +
 		"| `boolean-with-default` |  | `boolean` | `false` | `-` | `-` | No |\n" +
@@ -153,7 +153,7 @@ You can configure the component with the inputs documented below.
 		"\n#### Inputs of component `first-component`\n" +
 		`
 | Name | Description | Type | Default | Options | Regex | Mandatory |
-|------|-------------|------|---------|---------|-------|-----------|
+| ---- | ----------- | ---- | ------- | ------- | ----- | --------- |
 ` +
 		"| `stage` |  | `-` | `-` | `-` | `-` | Yes |\n" +
 		"\n" +
@@ -188,7 +188,7 @@ You can configure the component with the inputs documented below.
 		"\n#### Inputs of component `second-component`\n" +
 		`
 | Name | Description | Type | Default | Options | Regex | Mandatory |
-|------|-------------|------|---------|---------|-------|-----------|
+| ---- | ----------- | ---- | ------- | ------- | ----- | --------- |
 ` +
 		"| `stage` |  | `-` | `-` | `-` | `-` | Yes |\n" +
 		"\n" +
