@@ -131,6 +131,26 @@ func TestFormatCommentAsPlainTextOnlyRemovesHashSymbolInTheBeginning(t *testing.
 	assert.Equal(t, expectedFormattedComment, actualFormattedComment)
 }
 
+func TestFormatCommentAsPlainTextPreservesLeadingIndentation(t *testing.T) {
+	t.Parallel()
+
+	multilineComment := `# This is a code block:
+#   indented line
+#     more indented line
+# back to normal
+#without space`
+
+	expectedFormattedComment := `This is a code block:
+  indented line
+    more indented line
+back to normal
+without space`
+
+	actualFormattedComment := FormatCommentAsPlainText(multilineComment)
+
+	assert.Equal(t, expectedFormattedComment, actualFormattedComment)
+}
+
 func TestReadYamlFilesFromDirectoryWithNoYamlFilesReturnsNoYamlFiles(t *testing.T) {
 	t.Parallel()
 
