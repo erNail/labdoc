@@ -43,6 +43,10 @@ brews:
       token: "{{ .Env.HOMEBREW_TAP_ERNAIL_GITHUB_TOKEN }}"
       pull_request:
         enabled: true
+        base:
+          owner: "erNail"
+          name: "homebrew-tap"
+          branch: "main"
 
 release:
   draft: true
