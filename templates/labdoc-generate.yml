@@ -36,7 +36,6 @@ spec:
       type: "string"
       default: ""
 ...
-
 ---
 # Generates Markdown documentation from GitLab CI/CD Components.
 # The generated documentation will be uploaded as an artifact at `$[[ inputs.output-file-path ]]`.
