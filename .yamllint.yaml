@@ -1,6 +1,9 @@
 ---
 extends: "default"
 
+ignore:
+  - "dist/"
+
 rules:
   quoted-strings:
     quote-type: "double"
@@ -12,4 +15,7 @@ rules:
     min-spaces-from-content: 1
   document-end:
     present: true
+  document-start:
+    present: true
+    level: "error"
 ...

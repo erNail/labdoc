@@ -177,54 +177,24 @@ to get an overview of the planned features.
 
 ## Development
 
-### Dependencies
+### Install Dependencies
 
-To use all of the functionality listed below,
-you need to install all dependencies listed in the [dev container setup script](.devcontainer/postCreateCommand.sh).
-If you are using this repositories dev container, you already have all dependencies installed.
-
-### Testing
+All dependencies can be installed via `mise`.
 
 ```shell
-task test
+mise install
 ```
 
-### Linting
+If you are not using `mise`, check the [`mise.toml`](./mise.toml) for the required dependencies.
+
+### Run Tasks
 
 ```shell
-task lint
+# Find available tasks
+mise tasks
+
+# Run a task
+mise run <TASK_NAME>
 ```
 
-### Running
-
-```shell
-task run -- --help
-```
-
-```shell
-task run-generate
-```
-
-### Building
-
-```shell
-task build
-```
-
-### Building Container Images
-
-```shell
-task build-image
-```
-
-### Test GitHub Actions
-
-```shell
-task test-github-actions
-```
-
-### Test Release
-
-```shell
-task release-test
-```
+If you are not using `mise`, check the [`mise.toml`](./mise.toml) for the commands.

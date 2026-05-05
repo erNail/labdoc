@@ -1,0 +1,80 @@
+[tools]
+actionlint = "1.7.12"
+git-cliff = "2.13.1"
+"github:ernail/verscout" = "2.0.1"
+go = "1.26.2"
+golangci-lint = "2.12.1"
+goreleaser = "2.15.4"
+ko = "0.18.1"
+markdownlint-cli2 = "0.22.1"
+pre-commit = "4.6.0"
+prettier = "3.8.3"
+tombi = "0.10.4"
+yamllint = "1.38.0"
+
+[tasks.pre-commit]
+description = "Run linting and formatting"
+alias = "lint"
+run = [
+  "go run main.go generate --repoUrl github.com/erNail/labdoc --version main --check",
+  "yamllint .",
+  "prettier --check .",
+  "golangci-lint run ./... --fix",
+  "tombi format --check",
+  "tombi lint",
+  "markdownlint-cli2 **.md",
+  "actionlint",
+]
+
+[tasks.lint-fix]
+description = "Run linting and formatting with fixes not performed by the `pre-commit` or `lint` task"
+alias = "lint-fix"
+run = [
+  "prettier --write .",
+  "tombi format",
+  "markdownlint-cli2 **.md --fix",
+]
+
+[tasks.test]
+description = "Run tests"
+run = "go test ./..."
+
+[tasks.build]
+description = "Build labdoc binary"
+run = "go build -o dist/"
+
+[tasks.run]
+description = "Run labdoc"
+run = "go run main.go"
+
+[tasks.run-generate]
+description = "Run labdoc generate"
+run = "go run main.go generate --repoUrl github.com/erNail/labdoc --version main"
+
+[tasks.build-image]
+description = "Build container image locally"
+run = "ko build --platform all --local"
+
+[tasks.test-release-goreleaser]
+description = "Test release with goreleaser"
+run = "goreleaser release --snapshot --clean"
+
+[tasks.test-version-ldflags]
+description = "Test version ldflags"
+run = "go run -ldflags '-s -w -X github.com/erNail/labdoc/cmd.version=v1.2.3' main.go --version"
+
+[tasks.test-github-actions]
+description = "Test GitHub Actions locally"
+run = "act"
+
+[tasks.test-pre-commit-hook]
+description = "Test labdoc pre-commit hook locally"
+run = "pre-commit try-repo --verbose --all-files ./ labdoc-generate"
+
+[tasks.verscout-next]
+description = "Determine next version with verscout"
+run = "verscout next"
+
+[tasks.changelog]
+description = "Generate changelog with git-cliff"
+run = "git-cliff --unreleased --strip header"

@@ -1,12 +1,7 @@
 module.exports = {
   platform: "github",
-  repositories: [
-    process.env.RENOVATE_REPO
-  ],
-  extends: [
-    ":ignoreModulesAndTests",
-    ":enablePreCommit"
-  ],
+  repositories: [process.env.RENOVATE_REPO],
+  extends: [":ignoreModulesAndTests", ":enablePreCommit"],
   pruneStaleBranches: false,
   branchPrefix: "chore/",
   branchNameStrict: true,
@@ -23,41 +18,20 @@ module.exports = {
   cachePrivatePackages: true,
   packageRules: [
     {
-      matchPackagePatterns: [
-        "*"
-      ],
-      semanticCommitType: "chore"
+      matchPackagePatterns: ["*"],
+      semanticCommitType: "chore",
     },
     {
-      matchDepTypes: [
-        "dependencies",
-        "require"
-      ],
-      semanticCommitType: "fix"
+      matchDepTypes: ["dependencies", "require"],
+      semanticCommitType: "fix",
     },
     {
-      matchManagers: [
-        "github-actions"
-      ],
+      matchManagers: ["github-actions"],
       semanticCommitType: "ci",
     },
     {
-      matchDatasources: [
-        "docker"
-      ],
-      pinDigests: false
+      matchDatasources: ["docker"],
+      pinDigests: false,
     },
   ],
-  customManagers: [
-    {
-      customType: "regex",
-      datasourceTemplate: "docker",
-      managerFilePatterns: [
-        "/(^|/)Chart\\.yaml$/"
-      ],
-      matchStrings: [
-        "#\\s*renovate: image=(?<depName>.*?)\\s+appVersion:\\s*[\"']?(?<currentValue>[\\w+\\.\\-]*)"
-      ]
-    }
-  ]
 };

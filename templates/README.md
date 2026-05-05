@@ -13,7 +13,7 @@ You can add this component to an existing `.gitlab-ci.yml` file by using the `in
 
 ```yaml
 include:
-  - component: "gitlab.com/erNail/labdoc/labdoc-generate@latest"
+  - component: "github.com/erNail/labdoc/labdoc-generate@main"
     inputs: {}
 ```
 
