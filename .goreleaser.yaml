@@ -21,6 +21,7 @@ builds:
 kos:
   - repositories:
       - "ernail/labdoc"
+    base_image: "alpine"
     tags:
       - "{{ .Version }}"
     bare: true
