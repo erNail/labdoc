@@ -65,7 +65,7 @@ func FormatCommentAsPlainText(comment string) string {
 	lines := strings.Split(comment, "\n")
 
 	for i, line := range lines {
-		lines[i] = strings.TrimSpace(strings.TrimPrefix(line, "#"))
+		lines[i] = strings.TrimPrefix(strings.TrimPrefix(line, "#"), " ")
 	}
 
 	cleanedComment := strings.Join(lines, "\n")
