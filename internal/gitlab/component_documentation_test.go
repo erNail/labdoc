@@ -134,6 +134,11 @@ second-component-second-job: {}
 
 ## Components
 
+The following components are available in this repository:
+
+- [first-component](#first-component)
+- [second-component](#second-component)
+
 ### first-component
 
 First Component

@@ -2,6 +2,10 @@
 
 ## Components
 
+The following components are available in this repository:
+
+- [labdoc-generate](#labdoc-generate)
+
 ### labdoc-generate
 
 A GitLab CI/CD Component for generating Markdown documentation from GitLab CI/CD Components
