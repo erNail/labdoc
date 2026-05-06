@@ -6,7 +6,7 @@ require (
 	github.com/sirupsen/logrus v1.9.4
 	github.com/spf13/afero v1.14.0
 	github.com/spf13/cobra v1.10.2
-	github.com/stretchr/testify v1.10.0
+	github.com/stretchr/testify v1.11.1
 	gopkg.in/yaml.v3 v3.0.1
 )
 
