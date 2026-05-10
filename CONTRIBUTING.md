@@ -7,7 +7,7 @@ First off, thanks for taking the time to contribute!
 ### Reporting Bugs
 
 If you find any bugs, feel free to create an issue on GitHub.
-The "Bug report" issue template will guide you through the needed information.
+The "Bug report" issue template will guide you through the needed information
 
 ### Suggesting new features or changes
 

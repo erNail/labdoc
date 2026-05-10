@@ -1,4 +1,5 @@
 [tools]
+act = "0.2.88"
 actionlint = "1.7.12"
 git-cliff = "2.13.1"
 "github:ernail/verscout" = "2.0.1"
@@ -12,69 +13,82 @@ prettier = "3.8.3"
 tombi = "0.11.1"
 yamllint = "1.38.0"
 
-[tasks.pre-commit]
+[tasks.lint]
 description = "Run linting and formatting"
-alias = "lint"
-run = [
-  "go run main.go generate --repoUrl github.com/erNail/labdoc --version main --check",
-  "yamllint .",
-  "prettier --check .",
-  "golangci-lint run ./... --fix",
-  "tombi format --check",
-  "tombi lint",
-  "markdownlint-cli2 **.md",
-  "actionlint",
-]
-
-[tasks.lint-fix]
-description = "Run linting and formatting with fixes not performed by the `pre-commit` or `lint` task"
-alias = "lint-fix"
-run = [
-  "prettier --write .",
-  "tombi format",
-  "markdownlint-cli2 **.md --fix",
-]
+run = """
+  BEFORE=$(git diff)
+  go run main.go generate --repoUrl github.com/erNail/labdoc --version main
+  yamllint .
+  prettier --write .
+  golangci-lint run ./... --fix
+  tombi format
+  tombi lint
+  markdownlint-cli2 **.md
+  actionlint
+  AFTER=$(git diff)
+  [ "$BEFORE" = "$AFTER" ] || exit 1
+"""
 
 [tasks.test]
 description = "Run tests"
 run = "go test ./..."
 
+[tasks."test:version"]
+description = "Test if the version is correctly set via ldflags"
+run = """
+  VERSION="v1.2.3"
+  EXPECTED="labdoc version $VERSION"
+  ACTUAL=$(go run -ldflags "-s -w -X github.com/erNail/labdoc/cmd.version=$VERSION" main.go --version)
+  if [ "$EXPECTED" != "$ACTUAL" ]; then
+    echo "Version mismatch: expected $EXPECTED but got $ACTUAL"
+    exit 1
+  fi
+"""
+
+[tasks."test:pre-commit-hook"]
+description = "Test labdoc pre-commit hook locally"
+run = "pre-commit try-repo --verbose --all-files ./ labdoc-generate"
+
 [tasks.build]
 description = "Build labdoc binary"
 run = "go build -o dist/"
+
+[tasks."build:image"]
+description = "Build container image locally"
+run = "ko build --platform all --local"
 
 [tasks.run]
 description = "Run labdoc"
 run = "go run main.go"
 
-[tasks.run-generate]
+[tasks."run:generate"]
 description = "Run labdoc generate"
 run = "go run main.go generate --repoUrl github.com/erNail/labdoc --version main"
 
-[tasks.build-image]
-description = "Build container image locally"
-run = "ko build --platform all --local"
-
-[tasks.test-release-goreleaser]
+[tasks."goreleaser:test"]
 description = "Test release with goreleaser"
 run = "goreleaser release --snapshot --clean"
 
-[tasks.test-version-ldflags]
-description = "Test version ldflags"
-run = "go run -ldflags '-s -w -X github.com/erNail/labdoc/cmd.version=v1.2.3' main.go --version"
-
-[tasks.test-github-actions]
+[tasks.act]
 description = "Test GitHub Actions locally"
 run = "act"
 
-[tasks.test-pre-commit-hook]
-description = "Test labdoc pre-commit hook locally"
-run = "pre-commit try-repo --verbose --all-files ./ labdoc-generate"
-
-[tasks.verscout-next]
+[tasks."verscout"]
 description = "Determine next version with verscout"
 run = "verscout next"
 
-[tasks.changelog]
+[tasks."changelog:generate"]
 description = "Generate changelog with git-cliff"
 run = "git-cliff --unreleased --strip header"
+
+[tasks.pre-commit]
+description = "Run pre-commit tasks"
+run = [
+  { task = "run:generate" },
+  { tasks = [
+    "lint",
+    "test",
+    "test:version",
+    "build",
+  ] }
+]
