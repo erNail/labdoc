@@ -16,4 +16,14 @@ linters-settings:
       - "42"
   goconst:
     ignore-tests: true
+formatters:
+  enable:
+    - "gci"
+    - "gofmt"
+    - "gofumpt"
+    - "goimports"
+    - "golines"
+  settings:
+    golines:
+      max-len: 120
 ...
