@@ -58,7 +58,10 @@ jobs:
           username: "${{ secrets.DOCKER_USERNAME }}"
           password: "${{ secrets.DOCKER_LABDOC_GORELEASER_TOKEN }}"
       - name: "Generate release notes"
-        run: "mise run changelog -- --tag ${{ needs.determine-version-job.outputs.VERSION }} --output release-notes.md"
+        run: >-
+          mise run changelog:generate --
+          --tag ${{ needs.determine-version-job.outputs.VERSION }}
+          --output release-notes.md
       - name: "Create tag"
         run: "git tag ${{ needs.determine-version-job.outputs.VERSION }}"
       - name: "Run goreleaser"
