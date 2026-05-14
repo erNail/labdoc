@@ -2,7 +2,7 @@
 act = "0.2.88"
 actionlint = "1.7.12"
 git-cliff = "2.13.1"
-"github:ernail/verscout" = "2.0.1"
+"github:ernail/verscout" = "2.1.0"
 go = "1.26.3"
 golangci-lint = "2.12.2"
 goreleaser = "2.15.4"
