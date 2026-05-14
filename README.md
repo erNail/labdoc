@@ -72,7 +72,7 @@ spec:
     my-other-input:
       description: >-
         This is a multiline input.
-        Since this output is used in a table, the `>-` is used to remove any newline characters
+        Since this input is used in a table, the `>-` is used to remove any newline characters.
 ...
 
 ---
@@ -111,7 +111,7 @@ labdoc generate --repoUrl github.com/erNail/labdoc --check
 ```
 
 This command will not write the documentation to a file.
-It will only check if there is already a documentation, and if the content would change.
+It will only check if there is already documentation, and if the content would change.
 
 If the content remains unchanged, the command will exit with code 0.
 If there is no documentation, or the existing documentation would change, the command will exit with code 2.
