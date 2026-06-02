@@ -1,5 +1,5 @@
 [tools]
-act = "0.2.88"
+act = "0.2.89"
 actionlint = "1.7.12"
 git-cliff = "2.13.1"
 "github:ernail/verscout" = "2.1.1"
